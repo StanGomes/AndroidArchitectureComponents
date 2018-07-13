@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".view.ui.MainActivity">
+
+    <LinearLayout
+        style="@style/BackdropTheme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|bottom"
+        android:orientation="vertical"
+        android:paddingTop="100dp"
+        android:paddingBottom="50dp">
+
+        <include layout="@layout/backdrop" />
+
+    </LinearLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:elevation="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/ToolbarTheme"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_nav_open_24dp">
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_for_a_movie"
+                android:textColor="@color/white"
+                android:textColorHint="#FF9E9E9E"
+                app:searchBackIcon="@drawable/ic_navigate_before_black_24dp"
+                app:searchBackground="@color/highlightColor"
+                app:searchCloseIcon="@drawable/ic_clear_white_24dp" />
+        </FrameLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <FrameLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="8dp">
+
+    </FrameLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

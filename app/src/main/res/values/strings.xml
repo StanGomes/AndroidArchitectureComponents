@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Movie Time</string>
+    <string name="dummy_summary"> Many years have passed since Kratos took his vengeance against the Olympian gods. Having survived his final encounter with his father Zeus, Kratos now lives with his young son Atreus in the world of the Norse gods, a savage land inhabited by many ferocious monsters and warriors. In order to teach his son how to survive in such a world, Kratos must master the rage that has driven him for many years and embrace his newfound role as a father and a mentor.</string>
+    <string name="dummy_title">God Of War</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="production_companies">Production companies</string>
+    <string name="search_action">search_action</string>
+    <string name="search">Search</string>
+    <string name="search_for_a_movie">Search for a movie!</string>
+</resources>

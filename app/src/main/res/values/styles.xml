@@ -1,0 +1,34 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="TextButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="BackdropTheme" parent="">
+        <item name="android:background">?attr/colorAccent</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:theme">@style/AppTheme</item>
+        <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="titleTextAppearance">@style/TextAppearanceToolbar</item>
+    </style>
+
+    <style name="TextAppearanceToolbar" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

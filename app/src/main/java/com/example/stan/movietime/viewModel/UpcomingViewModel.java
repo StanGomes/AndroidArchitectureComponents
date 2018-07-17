@@ -1,8 +1,8 @@
 package com.example.stan.movietime.viewModel;
 
-import com.example.stan.movietime.model.MovieRepository;
 import com.example.stan.movietime.model.db.entity.UpcomingEntity;
 import com.example.stan.movietime.model.network.model.Resource;
+import com.example.stan.movietime.model.repository.UpcomingRepository;
 import com.example.stan.movietime.utils.Constants;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class UpcomingViewModel extends ViewModel {
     private LiveData<Resource<List<UpcomingEntity>>> mMovieListLiveData;
 
     @Inject
-    public UpcomingViewModel(MovieRepository movieRepository) {
-        mMovieListLiveData = movieRepository.getUpcomingList(Constants.API_KEY, "us");
+    public UpcomingViewModel(UpcomingRepository upcomingRepository) {
+        mMovieListLiveData = upcomingRepository.getMovieList(Constants.API_KEY, "us");
     }
 
     public LiveData<Resource<List<UpcomingEntity>>> getMovies() {

@@ -1,8 +1,8 @@
 package com.example.stan.movietime.viewModel;
 
-import com.example.stan.movietime.model.MovieRepository;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
 import com.example.stan.movietime.model.network.model.Resource;
+import com.example.stan.movietime.model.repository.MovieDetailRepository;
 import com.example.stan.movietime.utils.Constants;
 
 import javax.inject.Inject;
@@ -16,18 +16,16 @@ import androidx.lifecycle.ViewModel;
  ************************/
 public class MovieDetailViewModel extends ViewModel {
 
-    private static final String TAG = MovieDetailViewModel.class.getSimpleName();
-    private final MovieRepository movieRepository;
-
+    private final MovieDetailRepository movieDetailRepository;
 
     @Inject
-    public MovieDetailViewModel(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    public MovieDetailViewModel(MovieDetailRepository movieDetailRepository) {
+        this.movieDetailRepository = movieDetailRepository;
     }
 
 
     public LiveData<Resource<MovieDetailEntity>> getMovieDetails(int id) {
-        return movieRepository.getMovieDetails(Constants.API_KEY, id);
+        return movieDetailRepository.getMovieDetails(Constants.API_KEY, id);
     }
 
 }

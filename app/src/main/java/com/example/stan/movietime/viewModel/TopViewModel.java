@@ -1,8 +1,8 @@
 package com.example.stan.movietime.viewModel;
 
-import com.example.stan.movietime.model.MovieRepository;
 import com.example.stan.movietime.model.db.entity.TopEntity;
 import com.example.stan.movietime.model.network.model.Resource;
+import com.example.stan.movietime.model.repository.TopRepository;
 import com.example.stan.movietime.utils.Constants;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class TopViewModel extends ViewModel {
     private LiveData<Resource<List<TopEntity>>> mMovieListLiveData;
 
     @Inject
-    public TopViewModel(MovieRepository movieRepository) {
-        mMovieListLiveData = movieRepository.getTopList(Constants.API_KEY, "us");
+    public TopViewModel(TopRepository topRepository) {
+        mMovieListLiveData = topRepository.getMovieList(Constants.API_KEY, "us");
     }
 
     public LiveData<Resource<List<TopEntity>>> getMovies() {

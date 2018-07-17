@@ -36,3 +36,5 @@ This app targets API 28
   -[ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - The ViewModel class is designed to store and manage UI-related data in a lifecycle conscious way.
   
 * [Dagger2](https://github.com/google/dagger) - A fast dependency injector for Android and Java
+* [LeakCanary](https://github.com/square/leakcanary) - A memory leak detection library for Android and Java
+

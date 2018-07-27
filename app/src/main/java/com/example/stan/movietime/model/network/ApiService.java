@@ -18,7 +18,7 @@ import retrofit2.http.Query;
  ************************/
 public interface ApiService {
 
-    String HTTP_BASE_URL = "http://api.themoviedb.org/3/";
+    String BASE_URL = "https://api.themoviedb.org/3/";
 
     @GET("movie/now_playing")
     Call<NowPlayingResponse> getNowPlaying(@Query("api_key") String apiKey, @Query("region") String region);
@@ -37,5 +37,8 @@ public interface ApiService {
 
     @GET("search/movie")
     Call<SearchResponse> searchMovie(@Query("api_key") String apiKey, @Query("query") String query);
+
+//    @GET("movie/{id}/credits")
+//    Call<CreditsResponse> getCredits(@Path("id") int id, @Query("api_key") String apiKey);
 
 }

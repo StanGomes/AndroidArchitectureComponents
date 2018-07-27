@@ -28,17 +28,6 @@ public class NowPlayingEntity {
     private String title;
 
 
-//    public NowPlayingEntity(int id, String posterPath, String overview, String releaseDate, String title, double voteAverage, String backdropPath) {
-//        this.id = id;
-//        this.posterPath = posterPath;
-//        this.overview = overview;
-//        this.releaseDate = releaseDate;
-//        this.title = title;
-//        this.voteAverage = voteAverage;
-//        this.backdropPath = backdropPath;
-//    }
-
-
     public double getVoteAverage() {
         return voteAverage;
     }

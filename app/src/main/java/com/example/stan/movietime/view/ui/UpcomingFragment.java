@@ -1,5 +1,6 @@
 package com.example.stan.movietime.view.ui;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
-import com.example.stan.movietime.view.adapter.MovieClickListener;
+import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
 import com.example.stan.movietime.view.adapter.UpcomingAdapter;
 import com.example.stan.movietime.viewModel.UpcomingViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
+import com.google.android.material.button.MaterialButton;
 
 import javax.inject.Inject;
 
@@ -21,49 +24,52 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
-/************************
- *Author : Stanley Gomes *
- *Since : 01/06/2018        *
- ************************/
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class UpcomingFragment extends Fragment implements MovieClickListener, Injectable {
 
-    private final static String TAG = UpcomingFragment.class.getSimpleName();
     @Inject
     ViewModelFactory viewModelFactory;
-    private UpcomingAdapter mMovieAdapter;
+
+    private UpcomingAdapter testAdapter;
 
     static UpcomingFragment newInstance() {
         return new UpcomingFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.upcoming_fragment, container, false);
-        final RecyclerView recyclerView = view.findViewById(R.id.upcoming_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
+        testAdapter = new UpcomingAdapter(this, getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.upcoming_snap);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-//        recyclerView.addItemDecoration(new DividerSpace(8));
-        mMovieAdapter = new UpcomingAdapter(this, getContext());
-        recyclerView.setAdapter(mMovieAdapter);
+        recyclerView.setAdapter(testAdapter);
+        Log.d("UPCOMING", "in OnCreateView");
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final UpcomingViewModel mViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpcomingViewModel.class);
-        observeViewModel(mViewModel);
+        UpcomingViewModel upcomingViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpcomingViewModel.class);
+        observeViewModel(upcomingViewModel);
     }
 
     private void observeViewModel(UpcomingViewModel mViewModel) {
-        mViewModel.getMovies().observe(this, moviesEntities -> {
-            if (moviesEntities != null) {
-                mMovieAdapter.setMovies(moviesEntities);
+        mViewModel.getMovies().observe(this, movieResults -> {
+            if (movieResults != null) {
+                testAdapter.setMovies(movieResults);
             }
         });
     }
@@ -73,6 +79,17 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
         this.startActivity(intent);
-        Log.d(TAG, "Clicked on: " + title);
+        Log.d("Upcoming ", "Clicked on: " + title);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        MaterialButton viewAllButton = view.findViewById(R.id.upcoming_all_button);
+        viewAllButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), ViewAllActivity.class);
+            intent.putExtra("upcoming_list", Constants.UPCOMING_LIST);
+            startActivity(intent);
+        });
+    }
+
 }

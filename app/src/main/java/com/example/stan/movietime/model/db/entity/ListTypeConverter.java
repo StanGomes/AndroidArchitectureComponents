@@ -40,7 +40,7 @@ public class ListTypeConverter {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<MovieDetailEntity.ProductionCompanies>>() {
+        Type type = new TypeToken<List<GenreResults>>() {
         }.getType();
         return gson.toJson(genreResults, type);
     }
@@ -56,5 +56,6 @@ public class ListTypeConverter {
 
         return gson.fromJson(data, type);
     }
+
 
 }

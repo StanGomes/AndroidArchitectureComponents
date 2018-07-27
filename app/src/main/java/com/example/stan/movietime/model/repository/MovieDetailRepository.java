@@ -8,6 +8,9 @@ import com.example.stan.movietime.model.network.ApiService;
 import com.example.stan.movietime.model.network.NetworkBoundResource;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.utils.AppExecutors;
+import com.example.stan.movietime.utils.RefreshSchedule;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,6 +31,7 @@ public class MovieDetailRepository {
     final private ApiService mApiService;
     private final MovieDao movieDao;
     private final AppExecutors appExecutors;
+    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(60, TimeUnit.MINUTES);
 
     @Inject
     MovieDetailRepository(AppExecutors executor, MovieDao movieDao, ApiService apiService) {
@@ -46,7 +50,7 @@ public class MovieDetailRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable MovieDetailEntity data) {
-                return data == null;
+                return data == null || listRefreshTimer.shouldFetch("details");
             }
 
 

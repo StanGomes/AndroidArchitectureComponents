@@ -28,4 +28,8 @@ public class MovieDetailViewModel extends ViewModel {
         return movieDetailRepository.getMovieDetails(Constants.API_KEY, id);
     }
 
+//    public LiveData<Resource<CreditsResponse>> getCredits(int id) {
+//        return movieDetailRepository.getCredits(id, Constants.API_KEY);
+//    }
+
 }

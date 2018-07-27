@@ -20,6 +20,7 @@ public class NowPlayingViewModel extends ViewModel {
 
     private final LiveData<Resource<List<NowPlayingEntity>>> mMovieListLiveData;
 
+
     @Inject
     public NowPlayingViewModel(NowPlayingRepository nowPlayingRepository) {
         mMovieListLiveData = nowPlayingRepository.getMovieList(Constants.API_KEY, "us");

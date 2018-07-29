@@ -14,13 +14,11 @@ The following diagram explains the architecture
 
 This app targets API 28
 
-![image1](https://imgur.com/VO6QRWpl.jpg)
-![image2](https://imgur.com/DYkrdaGl.jpg)
-![image3](https://imgur.com/6nnSfZHl.jpg)
-![image4](https://imgur.com/BI5bfDkl.jpg)
-![image5](https://imgur.com/2PekfBjl.jpg)
-![image6](https://imgur.com/N7nsqmTl.jpg)
-![image7](https://imgur.com/vmLDYHfl.jpg)
+![image1](https://imgur.com/3g82VgWl.jpg)
+![image2](https://imgur.com/Ero9dahl.jpg)
+![image3](https://imgur.com/qbGlhRVl.jpg)
+![image4](https://imgur.com/UriTBmRl.jpg)
+
 
 
 ## Built With

@@ -12,14 +12,8 @@ public class TopEntity {
     private int id;
     @SerializedName("poster_path")
     private String posterPath;
-    @SerializedName("overview")
-    private String overview;
-    @SerializedName("vote_average")
-    private double voteAverage;
     @SerializedName("backdrop_path")
     private String backdropPath;
-    @SerializedName("release_date")
-    private String releaseDate;
     @SerializedName("title")
     private String title;
 
@@ -39,36 +33,12 @@ public class TopEntity {
         this.posterPath = posterPath;
     }
 
-    public String getOverview() {
-        return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public double getVoteAverage() {
-        return voteAverage;
-    }
-
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
     public String getBackdropPath() {
         return backdropPath;
     }
 
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getTitle() {

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Movie Time</string>
-    <string name="dummy_summary"> Many years have passed since Kratos took his vengeance against the Olympian gods. Having survived his final encounter with his father Zeus, Kratos now lives with his young son Atreus in the world of the Norse gods, a savage land inhabited by many ferocious monsters and warriors. In order to teach his son how to survive in such a world, Kratos must master the rage that has driven him for many years and embrace his newfound role as a father and a mentor.</string>
-    <string name="dummy_title">God Of War</string>
+    <string name="dummy_summary">From DC Comics comes the Suicide Squad, an antihero team of incarcerated supervillains who act as deniable assets for the United States government, undertaking high-risk black ops missions in exchange for commuted prison sentences.</string>
+    <string name="dummy_title">Suicide Squad</string>
     <string name="now_playing">Now Playing</string>
     <string name="upcoming">Upcoming</string>
     <string name="popular">Popular</string>
@@ -10,4 +10,11 @@
     <string name="search_action">search_action</string>
     <string name="search">Search</string>
     <string name="search_for_a_movie">Search for a movie!</string>
+    <string name="view_more">view more</string>
+    <string name="discover">Discover</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="you_might_also_like">You might also like</string>
+
 </resources>

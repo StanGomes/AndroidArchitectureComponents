@@ -12,11 +12,10 @@
 
     <style name="TextButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textSize">14sp</item>
+
     </style>
 
-    <style name="BackdropTheme" parent="">
-        <item name="android:background">?attr/colorAccent</item>
-    </style>
 
     <style name="ToolbarTheme" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="android:background">@color/colorAccent</item>
@@ -25,9 +24,9 @@
         <item name="titleTextAppearance">@style/TextAppearanceToolbar</item>
     </style>
 
-    <style name="TextAppearanceToolbar" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textSize">16sp</item>
-        <item name="fontFamily">@font/noto_sans</item>
+    <style name="TextAppearanceToolbar" parent="">
+        <item name="android:textSize">21sp</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
         <item name="android:textStyle">bold</item>
     </style>
 

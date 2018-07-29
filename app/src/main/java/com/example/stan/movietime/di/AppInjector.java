@@ -22,7 +22,6 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class AppInjector {
 
     private AppInjector() {
-
     }
 
     public static void init(MoviesApp moviesApp) {

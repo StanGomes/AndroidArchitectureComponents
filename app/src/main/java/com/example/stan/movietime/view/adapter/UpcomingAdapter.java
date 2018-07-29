@@ -1,6 +1,7 @@
 package com.example.stan.movietime.view.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,57 +15,54 @@ import com.example.stan.movietime.R;
 import com.example.stan.movietime.model.db.entity.UpcomingEntity;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/************************
+/*************************
  *Author : Stanley Gomes *
- *Since : 01/06/2018        *
- ************************/
+ *************************/
+public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.ViewHolder> {
 
-public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.MovieViewHolder> {
-
-    private static final String TAG = UpcomingAdapter.class.getSimpleName();
-    private final MovieClickListener clickListener;
-
+    private final MovieClickListener movieClickListener;
+    private Context mContext;
     private Resource<List<UpcomingEntity>> upcomingList;
 
-    private Context mContext;
-
-    public UpcomingAdapter(MovieClickListener clickListener, Context context) {
-        this.clickListener = clickListener;
+    public UpcomingAdapter(MovieClickListener movieClickListener, Context context) {
+        this.movieClickListener = movieClickListener;
         this.mContext = context;
     }
 
     @NonNull
     @Override
-    public UpcomingAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row_layout, parent, false);
-        return new MovieViewHolder(view, clickListener);
+    public UpcomingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_item, parent, false);
+        return new UpcomingAdapter.ViewHolder(view, movieClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpcomingAdapter.MovieViewHolder holder, int position) {
-        RequestOptions posterRequestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(mContext)
-                .load(Constants.POSTER_PATH + upcomingList.data.get(holder.getAdapterPosition()).getPosterPath())
-                .apply(posterRequestOptions)
-                .into(holder.posterImageView);
+    public void onBindViewHolder(@NonNull UpcomingAdapter.ViewHolder holder, int position) {
+        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        if (upcomingList == null || upcomingList.data.isEmpty()) {
+            Log.d("upcomingAdapter", "empty list");
+        } else {
+            Glide.with(mContext)
+                    .load(Constants.BACKDROP_PATH + upcomingList.data.get(holder.getAdapterPosition()).getBackdropPath())
+                    .apply(requestOptions)
+                    .into(holder.backdropImage);
+            holder.title.setText(upcomingList.data.get(holder.getAdapterPosition()).getTitle());
 
-        holder.title.setText(upcomingList.data.get(holder.getAdapterPosition()).getTitle());
-        holder.date.setText(upcomingList.data.get(holder.getAdapterPosition()).getReleaseDate());
-        holder.summary.setText(upcomingList.data.get(holder.getAdapterPosition()).getOverview());
+        }
     }
 
     @Override
     public int getItemCount() {
         if (upcomingList.data != null) {
-            return upcomingList.data.size();
-        }
-        return 0;
+            return 7;
+        } else return 0;
     }
 
     public void setMovies(Resource<List<UpcomingEntity>> moviesEntities) {
@@ -72,18 +70,16 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.MovieV
         notifyDataSetChanged();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, summary, date;
-        ImageView posterImageView;
-        private MovieClickListener clickListener;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView title;
+        private ImageView backdropImage;
+        private MovieClickListener movieClickListener;
 
-        public MovieViewHolder(@NonNull View itemView, MovieClickListener listener) {
+        public ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
             super(itemView);
-            this.clickListener = listener;
-            posterImageView = itemView.findViewById(R.id.poster_imageView);
-            title = itemView.findViewById(R.id.title_textView);
-            summary = itemView.findViewById(R.id.summary_textView);
-            date = itemView.findViewById(R.id.date_textView);
+            this.movieClickListener = movieClickListener;
+            title = itemView.findViewById(R.id.movie_title);
+            backdropImage = itemView.findViewById(R.id.backdrop_ImageView);
             itemView.setOnClickListener(this);
         }
 
@@ -91,7 +87,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.MovieV
         public void onClick(View view) {
             int movieId = upcomingList.data.get(getAdapterPosition()).getId();
             String title = upcomingList.data.get(getAdapterPosition()).getTitle();
-            clickListener.onItemClickListener(movieId, title);
+            movieClickListener.onItemClickListener(movieId, title);
         }
     }
 }

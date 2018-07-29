@@ -31,17 +31,14 @@ import retrofit2.Response;
 
 /**
  * A generic class that can provide a resource backed by both the Room database and the network.
- * <p>
  * You can read more about it in the <a href="https://developer.android.com/arch">Architecture
  * Guide</a>.
- *
  * @param <ResultType>
  * @param <RequestType>
  */
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
-
     private final AppExecutors appExecutors;
 
     @MainThread
@@ -67,7 +64,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                 result.removeSource(dbSource);
                 saveResult(response.body());
             }
-
             @Override
             public void onFailure(Call<RequestType> call, Throwable t) {
                 onFetchFailed();

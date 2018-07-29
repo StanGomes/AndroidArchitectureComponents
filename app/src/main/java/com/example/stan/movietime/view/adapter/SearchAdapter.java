@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.model.db.entity.SearchEntity;
 import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /*************************
  *Author : Stanley Gomes *
- *Since : 01/06/2018     *
  *************************/
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewHolder> {
     private static final String TAG = SearchAdapter.class.getSimpleName();
@@ -43,7 +43,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
     @NonNull
     @Override
     public SearchAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_item, parent, false);
         return new MovieViewHolder(view, mMovieClickListener);
     }
 
@@ -56,8 +56,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                 .into(holder.posterImageView);
 
         holder.title.setText(searchList.get(holder.getAdapterPosition()).getTitle());
-        holder.date.setText(searchList.get(holder.getAdapterPosition()).getReleaseDate());
-        holder.summary.setText(searchList.get(holder.getAdapterPosition()).getOverview());
     }
 
     @Override
@@ -78,7 +76,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, summary, date;
+        TextView title;
         ImageView posterImageView;
 
         private MovieClickListener mListener;
@@ -86,10 +84,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
         MovieViewHolder(View itemView, MovieClickListener listener) {
             super(itemView);
             this.mListener = listener;
-            posterImageView = itemView.findViewById(R.id.poster_imageView);
-            title = itemView.findViewById(R.id.title_textView);
-            summary = itemView.findViewById(R.id.summary_textView);
-            date = itemView.findViewById(R.id.date_textView);
+            posterImageView = itemView.findViewById(R.id.poster_iView);
+            title = itemView.findViewById(R.id.list_title);
             itemView.setOnClickListener(this);
         }
 

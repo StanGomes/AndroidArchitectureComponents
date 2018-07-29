@@ -21,7 +21,7 @@ class AppModule {
     @Provides
     ApiService provideApiService() {
         return new Retrofit.Builder()
-                .baseUrl(ApiService.HTTP_BASE_URL)
+                .baseUrl(ApiService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService.class);

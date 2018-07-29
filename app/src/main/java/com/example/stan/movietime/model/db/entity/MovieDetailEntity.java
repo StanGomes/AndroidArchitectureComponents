@@ -1,5 +1,6 @@
 package com.example.stan.movietime.model.db.entity;
 
+import com.example.stan.movietime.model.db.entity.typeConverters.ListTypeConverter;
 import com.example.stan.movietime.model.network.model.GenreResults;
 import com.google.gson.annotations.SerializedName;
 

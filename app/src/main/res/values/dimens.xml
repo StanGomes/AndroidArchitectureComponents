@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="category_reveal_height">450dp</dimen>
+    <dimen name="item_offset">12dp</dimen>
+    <dimen name="search_item_offset">4dp</dimen>
 </resources>

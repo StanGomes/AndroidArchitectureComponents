@@ -15,84 +15,80 @@ import com.example.stan.movietime.R;
 import com.example.stan.movietime.model.db.entity.NowPlayingEntity;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/************************
+/*************************
  *Author : Stanley Gomes *
- *Since : 30/05/2018        *
- ************************/
-public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.MovieViewHolder> {
+ *************************/
+public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.ViewHolder> {
 
-    private static final String TAG = NowPlayingAdapter.class.getSimpleName();
-    private final MovieClickListener mMovieClickListener;
+    private final MovieClickListener movieClickListener;
+    private Context mContext;
     private Resource<List<NowPlayingEntity>> nowPlayingList;
 
-    private Context mContext;
-
     public NowPlayingAdapter(MovieClickListener movieClickListener, Context context) {
-        Log.d(TAG, "NowPlayingAdapter called");
-
-        this.mMovieClickListener = movieClickListener;
+        this.movieClickListener = movieClickListener;
         this.mContext = context;
     }
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row_layout, parent, false);
-        return new MovieViewHolder(view, mMovieClickListener);
+    public NowPlayingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_item, parent, false);
+        return new NowPlayingAdapter.ViewHolder(view, movieClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        RequestOptions posterRequestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(mContext)
-                .load(Constants.POSTER_PATH + nowPlayingList.data.get(holder.getAdapterPosition()).getPosterPath())
-                .apply(posterRequestOptions)
-                .into(holder.posterImageView);
+    public void onBindViewHolder(@NonNull NowPlayingAdapter.ViewHolder holder, int position) {
+        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        if (nowPlayingList == null || nowPlayingList.data.isEmpty()) {
+            Log.d("nowAdapter", "empty list");
+        } else {
+            Glide.with(mContext)
+                    .load(Constants.BACKDROP_PATH + nowPlayingList.data.get(holder.getAdapterPosition()).getBackdropPath())
+                    .apply(requestOptions)
+                    .into(holder.backdropImage);
+            holder.title.setText(nowPlayingList.data.get(holder.getAdapterPosition()).getTitle());
 
-        holder.title.setText(nowPlayingList.data.get(holder.getAdapterPosition()).getTitle());
-        holder.date.setText(nowPlayingList.data.get(holder.getAdapterPosition()).getReleaseDate());
-        holder.summary.setText(nowPlayingList.data.get(holder.getAdapterPosition()).getOverview());
+        }
     }
 
     @Override
     public int getItemCount() {
         if (nowPlayingList.data != null) {
-            return nowPlayingList.data.size();
+            return 7;
         } else return 0;
     }
+
 
     public void setMovies(Resource<List<NowPlayingEntity>> moviesEntities) {
         this.nowPlayingList = moviesEntities;
         notifyDataSetChanged();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView title;
+        private ImageView backdropImage;
+        private MovieClickListener movieClickListener;
 
-        TextView title, summary, date;
-
-        ImageView posterImageView;
-        private MovieClickListener mListener;
-        MovieViewHolder(View itemView, MovieClickListener listener) {
+        public ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
             super(itemView);
-            this.mListener = listener;
-            posterImageView = itemView.findViewById(R.id.poster_imageView);
-            title = itemView.findViewById(R.id.title_textView);
-            summary = itemView.findViewById(R.id.summary_textView);
-            date = itemView.findViewById(R.id.date_textView);
+            this.movieClickListener = movieClickListener;
+            title = itemView.findViewById(R.id.movie_title);
+            backdropImage = itemView.findViewById(R.id.backdrop_ImageView);
             itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             int movieId = nowPlayingList.data.get(getAdapterPosition()).getId();
             String title = nowPlayingList.data.get(getAdapterPosition()).getTitle();
-            mListener.onItemClickListener(movieId, title);
+            movieClickListener.onItemClickListener(movieId, title);
         }
     }
 }

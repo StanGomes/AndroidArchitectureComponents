@@ -1,5 +1,6 @@
 package com.example.stan.movietime.view.ui;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
-import com.example.stan.movietime.view.adapter.MovieClickListener;
+import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
 import com.example.stan.movietime.view.adapter.PopularAdapter;
 import com.example.stan.movietime.viewModel.PopularViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
+import com.google.android.material.button.MaterialButton;
 
 import javax.inject.Inject;
 
@@ -21,49 +24,51 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
-/************************
- *Author : Stanley Gomes *
- *Since : 01/06/2018        *
- ************************/
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class PopularFragment extends Fragment implements MovieClickListener, Injectable {
-
-    private final static String TAG = PopularFragment.class.getSimpleName();
     @Inject
     ViewModelFactory viewModelFactory;
-    private PopularAdapter mMovieAdapter;
+
+    private PopularAdapter testAdapter;
 
     static PopularFragment newInstance() {
         return new PopularFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.popular_fragment, container, false);
-        final RecyclerView recyclerView = view.findViewById(R.id.popular_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_popular, container, false);
+        testAdapter = new PopularAdapter(this, getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.popular_snap);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-//        recyclerView.addItemDecoration(new DividerSpace(4));
-        mMovieAdapter = new PopularAdapter(this, getContext());
-        recyclerView.setAdapter(mMovieAdapter);
+        recyclerView.setAdapter(testAdapter);
+        Log.d("Popular", "in OnCreateView");
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final PopularViewModel mViewModel = ViewModelProviders.of(this, viewModelFactory).get(PopularViewModel.class);
-        observeViewModel(mViewModel);
+        PopularViewModel popularViewModel = ViewModelProviders.of(this, viewModelFactory).get(PopularViewModel.class);
+        observeViewModel(popularViewModel);
     }
 
     private void observeViewModel(PopularViewModel mViewModel) {
-        mViewModel.getMovies().observe(this, moviesEntities -> {
-            if (moviesEntities != null) {
-                mMovieAdapter.setMovies(moviesEntities);
+        mViewModel.getMovies().observe(this, movieResults -> {
+            if (movieResults != null) {
+                testAdapter.setMovies(movieResults);
             }
         });
     }
@@ -73,6 +78,16 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
         this.startActivity(intent);
-        Log.d(TAG, "Clicked on: " + title);
+        Log.d("Popular ", "Clicked on: " + title);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        MaterialButton viewAllButton = view.findViewById(R.id.popular_all_button);
+        viewAllButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), ViewAllActivity.class);
+            intent.putExtra("popular_list", Constants.POPULAR_LIST);
+            startActivity(intent);
+        });
     }
 }

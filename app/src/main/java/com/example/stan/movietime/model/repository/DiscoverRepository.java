@@ -23,13 +23,13 @@ import retrofit2.Response;
  *Author : Stanley Gomes *
  *************************/
 @Singleton
-public class SearchRepository {
+public class DiscoverRepository {
 
-    private static final String TAG = SearchRepository.class.getSimpleName();
+    private static final String TAG = DiscoverRepository.class.getSimpleName();
     final private ApiService mApiService;
 
     @Inject
-    SearchRepository(ApiService apiService) {
+    DiscoverRepository(ApiService apiService) {
         this.mApiService = apiService;
     }
 

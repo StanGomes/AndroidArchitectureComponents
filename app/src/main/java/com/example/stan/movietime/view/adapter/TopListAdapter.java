@@ -71,7 +71,7 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ViewHold
         private ImageView poster;
         private MovieClickListener movieClickListener;
 
-        public ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
+        private ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
             super(itemView);
             this.movieClickListener = movieClickListener;
             title = itemView.findViewById(R.id.list_title);

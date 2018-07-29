@@ -16,9 +16,6 @@
 
     </style>
 
-    <style name="BackdropTheme" parent="">
-        <item name="android:background">?attr/colorAccent</item>
-    </style>
 
     <style name="ToolbarTheme" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="android:background">@color/colorAccent</item>

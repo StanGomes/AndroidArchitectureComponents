@@ -1,8 +1,10 @@
 package com.example.stan.movietime.view.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.stan.movietime.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import javax.inject.Inject;
 
@@ -27,6 +29,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         initUpcomingFragment();
         initPopularFragment();
         initTopFragment();
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.discover_fab);
+        floatingActionButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
+            startActivity(intent);
+        });
 
     }
 

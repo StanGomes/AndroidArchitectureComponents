@@ -88,11 +88,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/discover_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:elevation="12dp"
         android:src="@drawable/movie_roll"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_anchor="@id/nested_scroll_view"
         app:layout_anchorGravity="bottom|center"
         app:layout_behavior="@string/appbarsyncedfab_fab_behavior" />

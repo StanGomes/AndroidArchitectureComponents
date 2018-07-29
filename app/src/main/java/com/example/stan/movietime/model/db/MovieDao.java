@@ -1,8 +1,10 @@
 package com.example.stan.movietime.model.db;
 
+import com.example.stan.movietime.model.db.entity.CreditsEntity;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
 import com.example.stan.movietime.model.db.entity.NowPlayingEntity;
 import com.example.stan.movietime.model.db.entity.PopularEntity;
+import com.example.stan.movietime.model.db.entity.RecommendedEntity;
 import com.example.stan.movietime.model.db.entity.TopEntity;
 import com.example.stan.movietime.model.db.entity.UpcomingEntity;
 
@@ -37,6 +39,12 @@ public interface MovieDao {
     @Query("SELECT * FROM movie_detail where id = :id")
     LiveData<MovieDetailEntity> getMovieDetail(int id);
 
+    @Query("SELECT * FROM credits where id = :id")
+    LiveData<CreditsEntity> getMovieCredits(int id);
+
+    @Query("SELECT * FROM recommended")
+    LiveData<List<RecommendedEntity>> getRecommended();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveNowPlaying(List<NowPlayingEntity> nowPlayingEntities);
 
@@ -51,5 +59,11 @@ public interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveMovieDetails(MovieDetailEntity movieDetailEntity);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void saveMovieCredits(CreditsEntity creditsEntity);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void saveRecommendation(List<RecommendedEntity> recommendedEntity);
 
 }

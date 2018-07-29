@@ -19,7 +19,7 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:fontFamily="@font/montserrat"
-            android:text="Top Rated"
+            android:text="@string/top_rated"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="View More"
+            android:text="@string/view_more"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             app:cornerRadius="16dp" />
     </LinearLayout>

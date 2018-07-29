@@ -21,17 +21,15 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".view.ui.MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.ui.ViewAllActivity" />
-
         <activity android:name=".view.ui.MovieDetailActivity" />
+        <activity android:name=".view.ui.DiscoverActivity"></activity>
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ public class PopularViewModel extends ViewModel {
 
     @Inject
     public PopularViewModel(PopularRepository popularRepository) {
-        mMovieListLiveData = popularRepository.getMovieList(Constants.API_KEY, "us");
+        mMovieListLiveData = popularRepository.getMovieList(Constants.API_KEY, "CA|US");
     }
 
     public LiveData<Resource<List<PopularEntity>>> getMovies() {

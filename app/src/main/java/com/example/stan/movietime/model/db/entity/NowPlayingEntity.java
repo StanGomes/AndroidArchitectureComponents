@@ -16,25 +16,13 @@ public class NowPlayingEntity {
     private int id;
     @SerializedName("poster_path")
     private String posterPath;
-    @SerializedName("overview")
-    private String overview;
-    @SerializedName("vote_average")
-    private double voteAverage;
     @SerializedName("backdrop_path")
     private String backdropPath;
-    @SerializedName("release_date")
-    private String releaseDate;
     @SerializedName("title")
     private String title;
 
 
-    public double getVoteAverage() {
-        return voteAverage;
-    }
 
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
 
     public String getBackdropPath() {
         return backdropPath;
@@ -58,22 +46,6 @@ public class NowPlayingEntity {
 
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
-    }
-
-    public String getOverview() {
-        return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getTitle() {

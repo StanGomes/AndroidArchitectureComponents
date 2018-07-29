@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
+import com.example.stan.movietime.utils.ListItemSpacingDecoration;
 import com.example.stan.movietime.view.MovieClickListener;
 import com.example.stan.movietime.view.adapter.PopularListAdapter;
 import com.example.stan.movietime.viewModel.PopularViewModel;
@@ -21,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /*************************
@@ -45,8 +45,10 @@ public class PopularListFragment extends Fragment implements MovieClickListener,
         View view = inflater.inflate(R.layout.popular_list, container, false);
         popularListAdapter = new PopularListAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.popular_vertical_list_rv);
-        LinearLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        ListItemSpacingDecoration itemSpacingDecoration = new ListItemSpacingDecoration(getResources().getDimensionPixelSize(R.dimen.item_offset));
+        recyclerView.addItemDecoration(itemSpacingDecoration);
         recyclerView.setAdapter(popularListAdapter);
         Log.d("POPULAR LIST", "in OnCreateView");
         return view;

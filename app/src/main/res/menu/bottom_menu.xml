@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/now_playing"
-        android:icon="@drawable/ic_local_movies_black_24dp"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/now_playing" />
     <item
         android:id="@+id/upcoming"
-        android:icon="@drawable/ic_upcoming_24dp"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/upcoming" />
     <item
         android:id="@+id/popular"
-        android:icon="@drawable/ic_popular_24dp"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/popular" />
     <item
         android:id="@+id/top_rated"
-        android:icon="@drawable/ic_top_24dp"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/top_rated" />
 
 

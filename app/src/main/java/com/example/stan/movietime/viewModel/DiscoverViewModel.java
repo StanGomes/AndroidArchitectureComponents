@@ -1,7 +1,7 @@
 package com.example.stan.movietime.viewModel;
 
 import com.example.stan.movietime.model.db.entity.SearchEntity;
-import com.example.stan.movietime.model.repository.SearchRepository;
+import com.example.stan.movietime.model.repository.DiscoverRepository;
 import com.example.stan.movietime.utils.Constants;
 
 import java.util.List;
@@ -15,16 +15,16 @@ import androidx.lifecycle.ViewModel;
  *Author : Stanley Gomes *
  *Since : 01/06/2018     *
  *************************/
-public class SearchViewModel extends ViewModel {
-    private final SearchRepository searchRepository;
+public class DiscoverViewModel extends ViewModel {
+    private final DiscoverRepository discoverRepository;
 
     @Inject
-    public SearchViewModel(SearchRepository searchRepository) {
-        this.searchRepository = searchRepository;
+    public DiscoverViewModel(DiscoverRepository discoverRepository) {
+        this.discoverRepository = discoverRepository;
     }
 
     public LiveData<List<SearchEntity>> searchMovie(String query) {
-        return searchRepository.searchMovie(Constants.API_KEY, query);
+        return discoverRepository.searchMovie(Constants.API_KEY, query);
     }
 
 }

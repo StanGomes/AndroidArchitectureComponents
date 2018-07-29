@@ -1,8 +1,11 @@
 package com.example.stan.movietime.model.network;
 
+import com.example.stan.movietime.model.db.entity.CreditsEntity;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
+import com.example.stan.movietime.model.network.model.DiscoverResponse;
 import com.example.stan.movietime.model.network.model.NowPlayingResponse;
 import com.example.stan.movietime.model.network.model.PopularResponse;
+import com.example.stan.movietime.model.network.model.RecommendedResponse;
 import com.example.stan.movietime.model.network.model.SearchResponse;
 import com.example.stan.movietime.model.network.model.TopResponse;
 import com.example.stan.movietime.model.network.model.UpcomingResponse;
@@ -38,7 +41,13 @@ public interface ApiService {
     @GET("search/movie")
     Call<SearchResponse> searchMovie(@Query("api_key") String apiKey, @Query("query") String query);
 
-//    @GET("movie/{id}/credits")
-//    Call<CreditsResponse> getCredits(@Path("id") int id, @Query("api_key") String apiKey);
+    @GET("movie/{id}/credits")
+    Call<CreditsEntity> getCredits(@Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("discover/movie")
+    Call<DiscoverResponse> discoverMovies(@Query("api_key") String apiKey, @Query("region") String region);
+
+    @GET("movie/{id}/recommendations")
+    Call<RecommendedResponse> getRecommended(@Path("id") int id, @Query("api_key") String apiKey);
 
 }

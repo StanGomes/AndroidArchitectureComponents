@@ -22,7 +22,7 @@ public class TopViewModel extends ViewModel {
 
     @Inject
     public TopViewModel(TopRepository topRepository) {
-        mMovieListLiveData = topRepository.getMovieList(Constants.API_KEY, "us");
+        mMovieListLiveData = topRepository.getMovieList(Constants.API_KEY, "CA|US");
     }
 
     public LiveData<Resource<List<TopEntity>>> getMovies() {

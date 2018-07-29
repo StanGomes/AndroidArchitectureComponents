@@ -22,7 +22,7 @@ public class UpcomingViewModel extends ViewModel {
 
     @Inject
     public UpcomingViewModel(UpcomingRepository upcomingRepository) {
-        mMovieListLiveData = upcomingRepository.getMovieList(Constants.API_KEY, "us");
+        mMovieListLiveData = upcomingRepository.getMovieList(Constants.API_KEY, "CA|US");
     }
 
     public LiveData<Resource<List<UpcomingEntity>>> getMovies() {

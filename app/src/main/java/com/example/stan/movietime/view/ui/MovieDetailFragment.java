@@ -2,8 +2,10 @@ package com.example.stan.movietime.view.ui;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,13 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
+import com.example.stan.movietime.model.db.entity.RecommendedEntity;
+import com.example.stan.movietime.model.network.model.Cast;
 import com.example.stan.movietime.model.network.model.GenreResults;
 import com.example.stan.movietime.utils.Constants;
+import com.example.stan.movietime.view.MovieClickListener;
+import com.example.stan.movietime.view.adapter.CastAdapter;
+import com.example.stan.movietime.view.adapter.RecommendedAdapter;
 import com.example.stan.movietime.viewModel.MovieDetailViewModel;
 
 import java.util.List;
@@ -30,7 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -38,7 +45,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieDetailFragment extends androidx.fragment.app.Fragment implements Injectable {
+public class MovieDetailFragment extends androidx.fragment.app.Fragment implements MovieClickListener, Injectable {
 
     private static final String TAG = MovieDetailFragment.class.getSimpleName();
 
@@ -49,8 +56,7 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
     private TextView titleTv, scoreTv, summaryTv, runtimeTv, releaseDateTv, genreTv;
     private ImageView backdropIv, posterIv;
     private MaterialRatingBar ratingBar;
-    private RecyclerView castRecyclerView;
-//    private CastAdapter castAdapter;
+    private RecyclerView castRecyclerView, recommendRecyclerView;
 
 
     private static String formatHoursAndMinutes(int totalMinutes) {
@@ -95,6 +101,7 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
         releaseDateTv = view.findViewById(R.id.date_tv);
         ratingBar = view.findViewById(R.id.rating_bar);
         castRecyclerView = view.findViewById(R.id.cast_rv);
+        recommendRecyclerView = view.findViewById(R.id.recommended_rv);
         return view;
     }
 
@@ -102,32 +109,46 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MovieDetailViewModel movieDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel.class);
-//        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-//        final SnapHelper snapHelper = new LinearSnapHelper();
-//        snapHelper.attachToRecyclerView(castRecyclerView);
-//        castAdapter = new CastAdapter(getContext());
-//        castRecyclerView.setLayoutManager(linearLayoutManager);
-//        castRecyclerView.setAdapter(castAdapter);
         observeViewModel(movieDetailViewModel);
     }
 
 
     private void observeViewModel(MovieDetailViewModel movieDetailViewModel) {
         getMovieDetails(movieDetailViewModel);
-//        getCredits(movieDetailViewModel);
+        getCredits(movieDetailViewModel);
+        getRecommendation(movieDetailViewModel);
     }
 
-//    private void getCredits(MovieDetailViewModel movieDetailViewModel) {
-//        movieDetailViewModel.getCredits(id).observe(this, creditsResponseResource -> {
-//            if (creditsResponseResource.data != null) {
-//                updateCast(creditsResponseResource.data.getCasts());
-//            }
-//        });
-//    }
+    private void getRecommendation(MovieDetailViewModel movieDetailViewModel) {
+        movieDetailViewModel.getRecommended(id).observe(this, recommendedEntityResource -> {
+            if (recommendedEntityResource != null) {
+                updateRecommended(recommendedEntityResource);
+            }
+        });
+    }
 
-//    private void updateCast(List<Cast> casts) {
-//        castAdapter.setCasts(casts);
-//    }
+    private void updateRecommended(List<RecommendedEntity> recommendedEntityResource) {
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecommendedAdapter recommendedAdapter = new RecommendedAdapter(this, getContext(), recommendedEntityResource);
+        recommendRecyclerView.setLayoutManager(linearLayoutManager);
+        recommendRecyclerView.setAdapter(recommendedAdapter);
+//        recommendedAdapter.setRecommendedEntity(recommendedEntityResource);
+    }
+
+    private void getCredits(MovieDetailViewModel movieDetailViewModel) {
+        movieDetailViewModel.getCredits(id).observe(this, creditsResponseResource -> {
+            if (creditsResponseResource.data != null) {
+                updateCast(creditsResponseResource.data.getCasts());
+            }
+        });
+    }
+
+    private void updateCast(List<Cast> casts) {
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        CastAdapter castAdapter = new CastAdapter(casts, getContext());
+        castRecyclerView.setLayoutManager(linearLayoutManager);
+        castRecyclerView.setAdapter(castAdapter);
+    }
 
     private void getMovieDetails(MovieDetailViewModel movieDetailViewModel) {
         movieDetailViewModel.getMovieDetails(id).observe(this, movieDetailResponseResource -> {
@@ -170,24 +191,18 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         posterIv.setImageBitmap(resource);
-                        Palette.from(resource).generate(palette -> {
-                            if (palette != null) {
-                                applyPalette(palette);
-                            }
-                        });
                     }
                 });
 
+
     }
 
-    private void applyPalette(Palette palette) {
-        Palette.Swatch dominantSwatch = palette.getDominantSwatch();
-        if (dominantSwatch != null) {
-//            nestedScrollView.setBackgroundColor(dominantSwatch.getRgb());
-//            summaryCard.setBackgroundColor(dominantSwatch.getRgb());
-//            summaryTv.setTextColor(dominantSwatch.getBodyTextColor());
-//            scoreCard.setBackgroundColor(dominantSwatch.getRgb());
-//            scoreTv.setTextColor(dominantSwatch.getBodyTextColor());
-        }
+
+    @Override
+    public void onItemClickListener(int movieId, String title) {
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra("id", movieId);
+        this.startActivity(intent);
+        Log.d(TAG, "Clicked on: " + title);
     }
 }

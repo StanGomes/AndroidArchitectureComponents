@@ -1,9 +1,9 @@
 package com.example.stan.movietime.di;
 
+import com.example.stan.movietime.viewModel.DiscoverViewModel;
 import com.example.stan.movietime.viewModel.MovieDetailViewModel;
 import com.example.stan.movietime.viewModel.NowPlayingViewModel;
 import com.example.stan.movietime.viewModel.PopularViewModel;
-import com.example.stan.movietime.viewModel.SearchViewModel;
 import com.example.stan.movietime.viewModel.TopViewModel;
 import com.example.stan.movietime.viewModel.UpcomingViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
@@ -44,8 +44,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchViewModel.class)
-    abstract ViewModel bindSearchViewModel(SearchViewModel searchViewModel);
+    @ViewModelKey(DiscoverViewModel.class)
+    abstract ViewModel bindSearchViewModel(DiscoverViewModel discoverViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

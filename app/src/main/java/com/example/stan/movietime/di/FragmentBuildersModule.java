@@ -5,6 +5,7 @@ import com.example.stan.movietime.view.ui.NowPlayingFragment;
 import com.example.stan.movietime.view.ui.NowPlayingListFragment;
 import com.example.stan.movietime.view.ui.PopularFragment;
 import com.example.stan.movietime.view.ui.PopularListFragment;
+import com.example.stan.movietime.view.ui.SearchFragment;
 import com.example.stan.movietime.view.ui.TopFragment;
 import com.example.stan.movietime.view.ui.TopListFragment;
 import com.example.stan.movietime.view.ui.UpcomingFragment;
@@ -30,6 +31,9 @@ public abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract NowPlayingListFragment nowPlayingListFragment();
+
+    @ContributesAndroidInjector
+    abstract SearchFragment contributeSearchFragment();
 
     @ContributesAndroidInjector
     abstract PopularListFragment popularListFragment();

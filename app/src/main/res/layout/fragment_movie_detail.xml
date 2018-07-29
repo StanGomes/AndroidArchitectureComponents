@@ -218,21 +218,58 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintBottom_toTopOf="@id/cast_rv"
+            app:layout_constraintBottom_toTopOf="@id/starring_lbl"
             app:layout_constraintEnd_toStartOf="@id/right_guideline"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
             app:layout_constraintTop_toBottomOf="@id/poster_card"
             tools:text="@string/dummy_summary" />
 
+        <TextView
+            android:id="@+id/starring_lbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Starring"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/cast_rv"
+            app:layout_constraintEnd_toEndOf="@id/right_guideline"
+            app:layout_constraintStart_toStartOf="@id/left_guideline"
+            app:layout_constraintTop_toBottomOf="@id/summary_tv" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cast_rv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/starring_lbl"
+            tools:listitem="@layout/cast_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/similar_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/you_might_also_like"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/summary_tv"
-            tools:listitem="@layout/cast_item">
+            app:layout_constraintTop_toBottomOf="@id/cast_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommended_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/similar_label"
+            tools:listitem="@layout/horizontal_item">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -1,9 +1,13 @@
 package com.example.stan.movietime.viewModel;
 
+import com.example.stan.movietime.model.db.entity.CreditsEntity;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
+import com.example.stan.movietime.model.db.entity.RecommendedEntity;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.model.repository.MovieDetailRepository;
 import com.example.stan.movietime.utils.Constants;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,8 +32,11 @@ public class MovieDetailViewModel extends ViewModel {
         return movieDetailRepository.getMovieDetails(Constants.API_KEY, id);
     }
 
-//    public LiveData<Resource<CreditsResponse>> getCredits(int id) {
-//        return movieDetailRepository.getCredits(id, Constants.API_KEY);
-//    }
+    public LiveData<Resource<CreditsEntity>> getCredits(int id) {
+        return movieDetailRepository.getMovieCredits(Constants.API_KEY, id);
+    }
 
+    public LiveData<List<RecommendedEntity>> getRecommended(int id) {
+        return movieDetailRepository.getRecommended(id, Constants.API_KEY);
+    }
 }

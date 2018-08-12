@@ -58,7 +58,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         if (casts != null) {
-            return 10;
+            return casts.size();
         } else return 0;
     }
 

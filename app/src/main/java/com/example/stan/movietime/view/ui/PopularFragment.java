@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +40,7 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
     ViewModelFactory viewModelFactory;
 
     private PopularAdapter testAdapter;
+    private TextView popularLabel;
 
     static PopularFragment newInstance() {
         return new PopularFragment();
@@ -49,6 +53,7 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
         View view = inflater.inflate(R.layout.fragment_popular, container, false);
         testAdapter = new PopularAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.popular_snap);
+        popularLabel = view.findViewById(R.id.popular_label);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -87,7 +92,8 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("popular_list", Constants.POPULAR_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), popularLabel, ViewCompat.getTransitionName(popularLabel));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
 }

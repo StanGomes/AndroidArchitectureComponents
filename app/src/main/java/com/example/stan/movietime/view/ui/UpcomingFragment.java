@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,7 +40,8 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
     @Inject
     ViewModelFactory viewModelFactory;
 
-    private UpcomingAdapter testAdapter;
+    private UpcomingAdapter upcomingAdapter;
+    private TextView upcomingLabel;
 
     static UpcomingFragment newInstance() {
         return new UpcomingFragment();
@@ -48,13 +52,14 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
-        testAdapter = new UpcomingAdapter(this, getContext());
+        upcomingAdapter = new UpcomingAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.upcoming_snap);
+        upcomingLabel = view.findViewById(R.id.label_upcoming);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(testAdapter);
+        recyclerView.setAdapter(upcomingAdapter);
         Log.d("UPCOMING", "in OnCreateView");
         return view;
     }
@@ -69,7 +74,7 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
     private void observeViewModel(UpcomingViewModel mViewModel) {
         mViewModel.getMovies().observe(this, movieResults -> {
             if (movieResults != null) {
-                testAdapter.setMovies(movieResults);
+                upcomingAdapter.setMovies(movieResults);
             }
         });
     }
@@ -88,7 +93,8 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("upcoming_list", Constants.UPCOMING_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), upcomingLabel, ViewCompat.getTransitionName(upcomingLabel));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
 

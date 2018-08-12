@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +41,8 @@ public class NowPlayingFragment extends Fragment implements MovieClickListener, 
 
     private NowPlayingAdapter nowPlayingAdapter;
 
+    private TextView nowPlayingLabel;
+
     static NowPlayingFragment newInstance() {
         return new NowPlayingFragment();
     }
@@ -49,6 +54,7 @@ public class NowPlayingFragment extends Fragment implements MovieClickListener, 
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         nowPlayingAdapter = new NowPlayingAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.nowPlaying_snap);
+        nowPlayingLabel = view.findViewById(R.id.now_playing_label);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -89,7 +95,8 @@ public class NowPlayingFragment extends Fragment implements MovieClickListener, 
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("now_playing_list", Constants.NOW_PLAYING_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), nowPlayingLabel, ViewCompat.getTransitionName(nowPlayingLabel));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
 }

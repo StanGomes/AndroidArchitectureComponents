@@ -34,7 +34,7 @@ public class PopularRepository implements Repository<PopularEntity> {
     private final MovieDao movieDao;
     private final AppExecutors appExecutors;
 
-    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(10, TimeUnit.MINUTES);
+    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(60, TimeUnit.MINUTES);
 
     @Inject
     PopularRepository(AppExecutors executor, MovieDao movieDao, ApiService apiService) {
@@ -48,6 +48,8 @@ public class PopularRepository implements Repository<PopularEntity> {
         return new NetworkBoundResource<List<PopularEntity>, PopularResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull PopularResponse item) {
+                Log.d(TAG, "Deleting popular table");
+                movieDao.deletePopular();
                 Log.d(TAG, "Saving item to popular table");
                 movieDao.savePopular(item.getResults());
             }

@@ -25,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="cast_profile_image"
             tools:src="@drawable/cast" />
 
         <TextView
@@ -39,9 +40,9 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/cast_iView"
-            app:layout_constraintEnd_toEndOf="@id/poster_iView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/poster_iView"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="Edward Norton" />
 
         <TextView
@@ -49,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:fontFamily="@font/fira_sans_semibold"
+            android:fontFamily="@font/fira_sans_light"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

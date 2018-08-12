@@ -34,7 +34,7 @@ public class UpcomingRepository implements Repository<UpcomingEntity> {
     private final MovieDao movieDao;
     private final AppExecutors appExecutors;
 
-    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(10, TimeUnit.MINUTES);
+    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(60, TimeUnit.MINUTES);
 
     @Inject
     UpcomingRepository(AppExecutors executor, MovieDao movieDao, ApiService apiService) {
@@ -49,6 +49,8 @@ public class UpcomingRepository implements Repository<UpcomingEntity> {
 
             @Override
             protected void saveCallResult(@NonNull UpcomingResponse item) {
+                Log.d(TAG, "Deleting upcoming table");
+                movieDao.deleteUpcoming();
                 Log.d(TAG, "Saving item to upcoming table");
                 movieDao.saveUpcoming(item.getResults());
             }

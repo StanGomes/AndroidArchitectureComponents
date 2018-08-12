@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +41,7 @@ public class TopFragment extends Fragment implements MovieClickListener, Injecta
     ViewModelFactory viewModelFactory;
 
     private TopAdapter testAdapter;
+    private TextView labelTop;
 
     static TopFragment newInstance() {
         return new TopFragment();
@@ -50,6 +54,7 @@ public class TopFragment extends Fragment implements MovieClickListener, Injecta
         View view = inflater.inflate(R.layout.fragment_top, container, false);
         testAdapter = new TopAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.top_snap);
+        labelTop = view.findViewById(R.id.label_top);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -88,7 +93,8 @@ public class TopFragment extends Fragment implements MovieClickListener, Injecta
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("top_list", Constants.TOP_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), labelTop, ViewCompat.getTransitionName(labelTop));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
 

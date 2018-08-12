@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="TextButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">

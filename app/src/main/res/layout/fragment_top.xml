@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/label_top_test"
+            android:id="@+id/label_top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -22,7 +22,8 @@
             android:text="@string/top_rated"
             android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:transitionName="label_top_transition" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/top_all_button"

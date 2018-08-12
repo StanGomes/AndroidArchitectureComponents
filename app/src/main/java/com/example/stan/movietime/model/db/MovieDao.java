@@ -4,7 +4,6 @@ import com.example.stan.movietime.model.db.entity.CreditsEntity;
 import com.example.stan.movietime.model.db.entity.MovieDetailEntity;
 import com.example.stan.movietime.model.db.entity.NowPlayingEntity;
 import com.example.stan.movietime.model.db.entity.PopularEntity;
-import com.example.stan.movietime.model.db.entity.RecommendedEntity;
 import com.example.stan.movietime.model.db.entity.TopEntity;
 import com.example.stan.movietime.model.db.entity.UpcomingEntity;
 
@@ -42,9 +41,6 @@ public interface MovieDao {
     @Query("SELECT * FROM credits where id = :id")
     LiveData<CreditsEntity> getMovieCredits(int id);
 
-    @Query("SELECT * FROM recommended")
-    LiveData<List<RecommendedEntity>> getRecommended();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveNowPlaying(List<NowPlayingEntity> nowPlayingEntities);
 
@@ -63,7 +59,19 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveMovieCredits(CreditsEntity creditsEntity);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveRecommendation(List<RecommendedEntity> recommendedEntity);
+    @Query("DELETE FROM now_playing")
+    void deleteNowPlaying();
+
+    @Query("DELETE FROM popular")
+    void deletePopular();
+
+    @Query("DELETE FROM upcoming")
+    void deleteUpcoming();
+
+    @Query("DELETE FROM top")
+    void deleteTop();
+
+    @Query("DELETE FROM movie_detail WHERE id = :id")
+    void deleteMovieDetail(int id);
 
 }

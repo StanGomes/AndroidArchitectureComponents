@@ -31,7 +31,6 @@ public class TopListFragment extends Fragment implements MovieClickListener, Inj
 
     @Inject
     ViewModelFactory viewModelFactory;
-    private Intent intent;
     private TopListAdapter topListAdapter;
 
     public static TopListFragment newInstance() {

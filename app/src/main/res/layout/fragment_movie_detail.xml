@@ -230,7 +230,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
-            android:text="Starring"
+            android:text="@string/starring"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/cast_rv"

@@ -51,6 +51,8 @@ public class MovieDetailRepository {
         return new NetworkBoundResource<MovieDetailEntity, MovieDetailEntity>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull MovieDetailEntity item) {
+                Log.d(TAG, "Deleting movie detail");
+                movieDao.deleteMovieDetail(id);
                 Log.d(TAG, "saving movie details to movie detail table");
                 movieDao.saveMovieDetails(item);
             }

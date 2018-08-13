@@ -1,9 +1,10 @@
 package com.example.stan.movietime.view.ui;
 
 
-import android.app.Fragment;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,9 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -28,6 +33,7 @@ import com.example.stan.movietime.view.MovieClickListener;
 import com.example.stan.movietime.view.adapter.CastAdapter;
 import com.example.stan.movietime.view.adapter.RecommendedAdapter;
 import com.example.stan.movietime.viewModel.MovieDetailViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -35,27 +41,34 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MovieDetailFragment extends androidx.fragment.app.Fragment implements MovieClickListener, Injectable {
+public class MovieDetailFragment extends Fragment implements MovieClickListener, Injectable {
 
     private static final String TAG = MovieDetailFragment.class.getSimpleName();
+    private static final String EXTRA_MOVIE_ID = "movie_id";
+    private static final String BACKDROP_TRANSITION = "backdrop_transition";
+    private static final String POSTER_TRANSITION = "poster_transition";
+    private static final String TITLE_TRANSITION = "title_transition";
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private int id;
+    private String imageTransition, titleTransition;
     private TextView titleTv, scoreTv, summaryTv, runtimeTv, releaseDateTv, genreTv;
     private ImageView backdropIv, posterIv;
     private MaterialRatingBar ratingBar;
+    private MaterialCardView backdropCard, posterCard;
     private RecyclerView castRecyclerView, recommendRecyclerView;
 
 
@@ -65,26 +78,45 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
         return (totalMinutes / 60) + "h " + minutes + "min";
     }
 
-    public static MovieDetailFragment newInstance(int movieId) {
+    public static MovieDetailFragment newInstance(int movieId, String titleTransition, String imageTransition) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         Bundle args = new Bundle();
-        args.putInt("movieId", movieId);
+        args.putInt(EXTRA_MOVIE_ID, movieId);
+        args.putString(BACKDROP_TRANSITION, imageTransition);
+        args.putString(POSTER_TRANSITION, imageTransition);
+        args.putString(TITLE_TRANSITION, titleTransition);
         movieDetailFragment.setArguments(args);
-
         return movieDetailFragment;
     }
 
     private int getMovieId() {
         if (getArguments() != null) {
-            return getArguments().getInt("movieId", 0);
+            return getArguments().getInt(EXTRA_MOVIE_ID, 0);
         } else return 0;
+    }
+
+    private String getBackdropTransitionName() {
+        if (getArguments() != null) {
+            return getArguments().getString(BACKDROP_TRANSITION);
+        } else return null;
+    }
+
+    private String getTitleTransitionName() {
+        if (getArguments() != null) {
+            return getArguments().getString(TITLE_TRANSITION);
+        } else return null;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = getMovieId();
+        imageTransition = getBackdropTransitionName();
+        titleTransition = getTitleTransitionName();
+        postponeEnterTransition();
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +130,8 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
         runtimeTv = view.findViewById(R.id.runtime_tv);
         scoreTv = view.findViewById(R.id.score_tv);
         genreTv = view.findViewById(R.id.genre_tv);
+        backdropCard = view.findViewById(R.id.header_card);
+        posterCard = view.findViewById(R.id.poster_card);
         releaseDateTv = view.findViewById(R.id.date_tv);
         ratingBar = view.findViewById(R.id.rating_bar);
         castRecyclerView = view.findViewById(R.id.cast_rv);
@@ -108,10 +142,15 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (MovieDetailActivity.intent.getStringExtra(BACKDROP_TRANSITION) == null) {
+            posterCard.setTransitionName(imageTransition);
+        } else {
+            backdropCard.setTransitionName(imageTransition);
+        }
+        titleTv.setTransitionName(titleTransition);
         MovieDetailViewModel movieDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel.class);
         observeViewModel(movieDetailViewModel);
     }
-
 
     private void observeViewModel(MovieDetailViewModel movieDetailViewModel) {
         getMovieDetails(movieDetailViewModel);
@@ -132,7 +171,6 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
         RecommendedAdapter recommendedAdapter = new RecommendedAdapter(this, getContext(), recommendedEntityResource);
         recommendRecyclerView.setLayoutManager(linearLayoutManager);
         recommendRecyclerView.setAdapter(recommendedAdapter);
-//        recommendedAdapter.setRecommendedEntity(recommendedEntityResource);
     }
 
     private void getCredits(MovieDetailViewModel movieDetailViewModel) {
@@ -173,15 +211,22 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
 
         final RequestOptions backdropRequestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(this)
-                .asBitmap()
                 .load(Constants.BACKDROP_PATH + data.getBackdropPath())
-                .apply(backdropRequestOptions)
-                .into(new SimpleTarget<Bitmap>() {
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        backdropIv.setImageBitmap(resource);
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        startPostponedEnterTransition();
+                        return false;
                     }
-                });
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        startPostponedEnterTransition();
+                        return false;
+                    }
+                })
+                .into(backdropIv);
+
 
         Glide.with(this)
                 .asBitmap()
@@ -197,12 +242,19 @@ public class MovieDetailFragment extends androidx.fragment.app.Fragment implemen
 
     }
 
-
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d(TAG, "Clicked on: " + title);
+        String backdropTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d(TAG, "Clicked on: " + title);
+        intent.putExtra("backdrop_transition", backdropTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+//        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+//        Pair<View, String> backdropPair = Pair.create(sharedImageView, backdropTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
     }
 }

@@ -33,7 +33,7 @@ public class NowPlayingRepository implements Repository<NowPlayingEntity> {
     private final MovieDao movieDao;
     private final AppExecutors appExecutors;
 
-    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(10, TimeUnit.MINUTES);
+    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(60, TimeUnit.MINUTES);
 
     @Inject
     NowPlayingRepository(AppExecutors executor, MovieDao movieDao, ApiService apiService) {
@@ -48,6 +48,8 @@ public class NowPlayingRepository implements Repository<NowPlayingEntity> {
 
             @Override
             protected void saveCallResult(@NonNull NowPlayingResponse item) {
+                Log.d(TAG, "Deleting now_playing table");
+                movieDao.deleteNowPlaying();
                 Log.d(TAG, "Saving item to now_playing table");
                 movieDao.saveNowPlaying(item.getResults());
             }

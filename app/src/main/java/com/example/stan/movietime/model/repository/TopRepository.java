@@ -34,7 +34,7 @@ public class TopRepository implements Repository<TopEntity> {
     private final MovieDao movieDao;
     private final AppExecutors appExecutors;
 
-    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(10, TimeUnit.MINUTES);
+    private RefreshSchedule<String> listRefreshTimer = new RefreshSchedule<>(60, TimeUnit.MINUTES);
 
     @Inject
     TopRepository(AppExecutors executor, MovieDao movieDao, ApiService apiService) {
@@ -49,6 +49,8 @@ public class TopRepository implements Repository<TopEntity> {
 
             @Override
             protected void saveCallResult(@NonNull TopResponse item) {
+                Log.d(TAG, "Deleting top table");
+                movieDao.deleteTop();
                 Log.d(TAG, "Saving item to top_list table");
                 movieDao.saveTop(item.getResults());
             }

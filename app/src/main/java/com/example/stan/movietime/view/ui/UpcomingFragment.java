@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -16,11 +17,14 @@ import com.example.stan.movietime.view.adapter.UpcomingAdapter;
 import com.example.stan.movietime.viewModel.UpcomingViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,7 +41,8 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
     @Inject
     ViewModelFactory viewModelFactory;
 
-    private UpcomingAdapter testAdapter;
+    private UpcomingAdapter upcomingAdapter;
+    private TextView upcomingLabel;
 
     static UpcomingFragment newInstance() {
         return new UpcomingFragment();
@@ -48,13 +53,14 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
-        testAdapter = new UpcomingAdapter(this, getContext());
+        upcomingAdapter = new UpcomingAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.upcoming_snap);
+        upcomingLabel = view.findViewById(R.id.label_upcoming);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(testAdapter);
+        recyclerView.setAdapter(upcomingAdapter);
         Log.d("UPCOMING", "in OnCreateView");
         return view;
     }
@@ -69,17 +75,27 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
     private void observeViewModel(UpcomingViewModel mViewModel) {
         mViewModel.getMovies().observe(this, movieResults -> {
             if (movieResults != null) {
-                testAdapter.setMovies(movieResults);
+                upcomingAdapter.setMovies(movieResults);
             }
         });
     }
 
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d("Now Playing ", "Clicked on: " + title);
+        String backdropTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d("Upcoming ", "Clicked on: " + title);
+        intent.putExtra("backdrop_transition", backdropTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+//        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+//        Pair<View, String> backdropPair = Pair.create(sharedImageView, backdropTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
+
+
     }
 
     @Override
@@ -88,7 +104,8 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("upcoming_list", Constants.UPCOMING_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), upcomingLabel, ViewCompat.getTransitionName(upcomingLabel));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
 

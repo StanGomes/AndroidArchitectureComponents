@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -16,11 +17,14 @@ import com.example.stan.movietime.view.adapter.PopularAdapter;
 import com.example.stan.movietime.viewModel.PopularViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +41,7 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
     ViewModelFactory viewModelFactory;
 
     private PopularAdapter testAdapter;
+    private TextView popularLabel;
 
     static PopularFragment newInstance() {
         return new PopularFragment();
@@ -49,6 +54,7 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
         View view = inflater.inflate(R.layout.fragment_popular, container, false);
         testAdapter = new PopularAdapter(this, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.popular_snap);
+        popularLabel = view.findViewById(R.id.popular_label);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -74,11 +80,19 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
     }
 
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d("Popular ", "Clicked on: " + title);
+        String backdropTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d("Popular ", "Clicked on: " + title);
+        intent.putExtra("backdrop_transition", backdropTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+//        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+//        Pair<View, String> backdropPair = Pair.create(sharedImageView, backdropTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
     }
 
     @Override
@@ -87,7 +101,9 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
         viewAllButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), ViewAllActivity.class);
             intent.putExtra("popular_list", Constants.POPULAR_LIST);
-            startActivity(intent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), popularLabel, ViewCompat.getTransitionName(popularLabel));
+            startActivity(intent, optionsCompat.toBundle());
         });
     }
+
 }

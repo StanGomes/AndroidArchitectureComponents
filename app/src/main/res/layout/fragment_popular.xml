@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/label_popular_test"
+            android:id="@+id/popular_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -22,7 +22,8 @@
             android:text="@string/popular"
             android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:transitionName="label_popular_transition" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/popular_all_button"

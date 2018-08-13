@@ -5,6 +5,7 @@
     android:id="@+id/details_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     tools:context=".view.ui.MovieDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +36,7 @@
             android:id="@+id/header_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="16dp"
             app:layout_constraintBottom_toTopOf="@id/horizontal_guideline"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
@@ -230,7 +231,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
-            android:text="Starring"
+            android:text="@string/starring"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/cast_rv"

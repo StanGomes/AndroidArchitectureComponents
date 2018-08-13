@@ -13,8 +13,10 @@
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
         android:text="@string/popular"
-        android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:transitionName="label_popular_transition" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popular_vertical_list_rv"

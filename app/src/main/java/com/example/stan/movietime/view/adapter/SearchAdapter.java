@@ -16,6 +16,7 @@ import com.example.stan.movietime.R;
 import com.example.stan.movietime.model.db.entity.SearchEntity;
 import com.example.stan.movietime.utils.Constants;
 import com.example.stan.movietime.view.MovieClickListener;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
     @Override
     public SearchAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_item, parent, false);
-        return new MovieViewHolder(view, mMovieClickListener);
+        return new MovieViewHolder(view);
     }
 
     @Override
@@ -75,25 +76,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
         notifyDataSetChanged();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title;
-        ImageView posterImageView;
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
+        private TextView title;
+        private ImageView posterImageView;
+        private MaterialCardView posterCard;
 
-        private MovieClickListener mListener;
-
-        MovieViewHolder(View itemView, MovieClickListener listener) {
+        MovieViewHolder(View itemView) {
             super(itemView);
-            this.mListener = listener;
             posterImageView = itemView.findViewById(R.id.poster_iView);
             title = itemView.findViewById(R.id.list_title);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int movieId = searchList.get(getAdapterPosition()).getId();
-            String title = searchList.get(getAdapterPosition()).getTitle();
-            mListener.onItemClickListener(movieId, title);
+            posterCard = itemView.findViewById(R.id.vertical_item_card);
         }
     }
 }

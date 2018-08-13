@@ -16,5 +16,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="you_might_also_like">You might also like</string>
+    <string name="starring">Starring</string>
 
 </resources>

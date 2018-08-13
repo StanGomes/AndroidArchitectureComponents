@@ -16,7 +16,7 @@ import androidx.room.RoomDatabase;
  *Since : 30/05/2018        *
  ************************/
 
-@Database(entities = {MovieDetailEntity.class, NowPlayingEntity.class, PopularEntity.class, TopEntity.class, UpcomingEntity.class, CreditsEntity.class, RecommendedEntity.class}, version = 13, exportSchema = false)
+@Database(entities = {MovieDetailEntity.class, NowPlayingEntity.class, PopularEntity.class, TopEntity.class, UpcomingEntity.class, CreditsEntity.class, RecommendedEntity.class}, version = 14, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
     public abstract MovieDao movieDao();

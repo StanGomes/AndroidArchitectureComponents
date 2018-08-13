@@ -3,9 +3,11 @@ package com.example.stan.movietime.view.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stan.movietime.R;
 import com.example.stan.movietime.di.Injectable;
@@ -14,11 +16,14 @@ import com.example.stan.movietime.view.MovieClickListener;
 import com.example.stan.movietime.view.adapter.NowPlayingListAdapter;
 import com.example.stan.movietime.viewModel.NowPlayingViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
+import com.google.android.material.card.MaterialCardView;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -54,6 +59,12 @@ public class NowPlayingListFragment extends Fragment implements MovieClickListen
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        postponeEnterTransition();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         NowPlayingViewModel nowPlayingViewModel = ViewModelProviders.of(this, viewModelFactory).get(NowPlayingViewModel.class);
@@ -75,10 +86,18 @@ public class NowPlayingListFragment extends Fragment implements MovieClickListen
     }
 
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d("Now Playing List", "Clicked on: " + title);
+        String posterTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d("Now Playing List ", "Clicked on: " + title);
+        intent.putExtra("poster_transition", posterTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+        Pair<View, String> backdropPair = Pair.create(sharedImageView, posterTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
     }
 }

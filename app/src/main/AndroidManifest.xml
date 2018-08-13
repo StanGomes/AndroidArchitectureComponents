@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".view.ui.ViewAllActivity" />
         <activity android:name=".view.ui.MovieDetailActivity" />
-        <activity android:name=".view.ui.DiscoverActivity"></activity>
+        <activity android:name=".view.ui.DiscoverActivity" />
     </application>
 
 </manifest>

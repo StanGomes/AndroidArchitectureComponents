@@ -17,6 +17,7 @@ import com.example.stan.movietime.view.adapter.PopularAdapter;
 import com.example.stan.movietime.viewModel.PopularViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import javax.inject.Inject;
 
@@ -79,11 +80,19 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
     }
 
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d("Popular ", "Clicked on: " + title);
+        String backdropTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d("Popular ", "Clicked on: " + title);
+        intent.putExtra("backdrop_transition", backdropTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+//        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+//        Pair<View, String> backdropPair = Pair.create(sharedImageView, backdropTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
     }
 
     @Override
@@ -96,4 +105,5 @@ public class PopularFragment extends Fragment implements MovieClickListener, Inj
             startActivity(intent, optionsCompat.toBundle());
         });
     }
+
 }

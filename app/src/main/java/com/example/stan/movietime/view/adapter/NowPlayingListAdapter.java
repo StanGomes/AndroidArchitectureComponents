@@ -15,10 +15,12 @@ import com.example.stan.movietime.model.db.entity.NowPlayingEntity;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.utils.Constants;
 import com.example.stan.movietime.view.MovieClickListener;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /*************************
@@ -40,7 +42,7 @@ public class NowPlayingListAdapter extends RecyclerView.Adapter<NowPlayingListAd
     @Override
     public NowPlayingListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_item, parent, false);
-        return new NowPlayingListAdapter.ViewHolder(view, movieClickListener);
+        return new NowPlayingListAdapter.ViewHolder(view);
     }
 
     @Override
@@ -50,8 +52,18 @@ public class NowPlayingListAdapter extends RecyclerView.Adapter<NowPlayingListAd
                 .load(Constants.POSTER_PATH + nowPlayingList.data.get(holder.getAdapterPosition()).getPosterPath())
                 .apply(requestOptions)
                 .into(holder.poster);
-
         holder.title.setText(nowPlayingList.data.get(holder.getAdapterPosition()).getTitle());
+
+        ViewCompat.setTransitionName(holder.posterCard, nowPlayingList.data.get(holder.getAdapterPosition()).getPosterPath());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int movieId = nowPlayingList.data.get(position).getId();
+                String title = nowPlayingList.data.get(position).getTitle();
+                movieClickListener.onItemClickListener(movieId, title, holder.title, holder.posterCard);
+            }
+        });
     }
 
     @Override
@@ -66,24 +78,16 @@ public class NowPlayingListAdapter extends RecyclerView.Adapter<NowPlayingListAd
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private ImageView poster;
-        private MovieClickListener movieClickListener;
+        private MaterialCardView posterCard;
 
-        public ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.movieClickListener = movieClickListener;
             title = itemView.findViewById(R.id.list_title);
             poster = itemView.findViewById(R.id.poster_iView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int movieId = nowPlayingList.data.get(getAdapterPosition()).getId();
-            String title = nowPlayingList.data.get(getAdapterPosition()).getTitle();
-            movieClickListener.onItemClickListener(movieId, title);
+            posterCard = itemView.findViewById(R.id.vertical_item_card);
         }
     }
 }

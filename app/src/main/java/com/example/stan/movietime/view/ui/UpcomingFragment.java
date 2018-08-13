@@ -17,6 +17,7 @@ import com.example.stan.movietime.view.adapter.UpcomingAdapter;
 import com.example.stan.movietime.viewModel.UpcomingViewModel;
 import com.example.stan.movietime.viewModel.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import javax.inject.Inject;
 
@@ -80,11 +81,21 @@ public class UpcomingFragment extends Fragment implements MovieClickListener, In
     }
 
     @Override
-    public void onItemClickListener(int movieId, String title) {
+    public void onItemClickListener(int movieId, String title, TextView sharedTextView, MaterialCardView sharedImageView) {
+        Log.d("Now Playing ", "Clicked on: " + title);
+        String backdropTransitionName = ViewCompat.getTransitionName(sharedImageView);
+        String titleTransitionName = ViewCompat.getTransitionName(sharedTextView);
+
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("id", movieId);
-        this.startActivity(intent);
-        Log.d("Upcoming ", "Clicked on: " + title);
+        intent.putExtra("backdrop_transition", backdropTransitionName);
+        intent.putExtra("title_transition", titleTransitionName);
+//        Pair<View, String> titlePair = Pair.create(sharedTextView, titleTransitionName);
+//        Pair<View, String> backdropPair = Pair.create(sharedImageView, backdropTransitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), sharedImageView, ViewCompat.getTransitionName(sharedImageView));
+        startActivity(intent, optionsCompat.toBundle());
+
+
     }
 
     @Override

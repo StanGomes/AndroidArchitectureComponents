@@ -74,4 +74,7 @@ public interface MovieDao {
     @Query("DELETE FROM movie_detail WHERE id = :id")
     void deleteMovieDetail(int id);
 
+    @Query("DELETE FROM credits WHERE id = :id")
+    void deleteCredits(int id);
+
 }

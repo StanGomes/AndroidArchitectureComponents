@@ -16,10 +16,12 @@ import com.example.stan.movietime.model.db.entity.UpcomingEntity;
 import com.example.stan.movietime.model.network.model.Resource;
 import com.example.stan.movietime.utils.Constants;
 import com.example.stan.movietime.view.MovieClickListener;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /*************************
@@ -40,7 +42,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.ViewHo
     @Override
     public UpcomingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_item, parent, false);
-        return new UpcomingAdapter.ViewHolder(view, movieClickListener);
+        return new UpcomingAdapter.ViewHolder(view);
     }
 
     @Override
@@ -56,6 +58,17 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.ViewHo
             holder.title.setText(upcomingList.data.get(holder.getAdapterPosition()).getTitle());
 
         }
+        ViewCompat.setTransitionName(holder.backdropCard, upcomingList.data.get(holder.getAdapterPosition()).getBackdropPath());
+//        ViewCompat.setTransitionName(holder.title, nowPlayingList.data.get(position).getTitle());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int movieId = upcomingList.data.get(position).getId();
+                String title = upcomingList.data.get(position).getTitle();
+                movieClickListener.onItemClickListener(movieId, title, holder.title, holder.backdropCard);
+            }
+        });
     }
 
     @Override
@@ -70,24 +83,17 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private ImageView backdropImage;
-        private MovieClickListener movieClickListener;
+        private MaterialCardView backdropCard;
 
-        public ViewHolder(@NonNull View itemView, MovieClickListener movieClickListener) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.movieClickListener = movieClickListener;
             title = itemView.findViewById(R.id.movie_title);
             backdropImage = itemView.findViewById(R.id.backdrop_ImageView);
-            itemView.setOnClickListener(this);
+            backdropCard = itemView.findViewById(R.id.horizontal_item_card);
         }
 
-        @Override
-        public void onClick(View view) {
-            int movieId = upcomingList.data.get(getAdapterPosition()).getId();
-            String title = upcomingList.data.get(getAdapterPosition()).getTitle();
-            movieClickListener.onItemClickListener(movieId, title);
-        }
     }
 }

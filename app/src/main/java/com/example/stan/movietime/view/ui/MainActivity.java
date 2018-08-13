@@ -25,10 +25,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initNowPlayingFragment();
-        initUpcomingFragment();
-        initPopularFragment();
-        initTopFragment();
+        if (savedInstanceState == null) {
+            initNowPlayingFragment();
+            initUpcomingFragment();
+            initPopularFragment();
+            initTopFragment();
+        }
+
 
         FloatingActionButton floatingActionButton = findViewById(R.id.discover_fab);
         floatingActionButton.setOnClickListener(view -> {
@@ -39,19 +42,19 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     }
 
     private void initTopFragment() {
-        navigateTo(TopFragment.newInstance(), R.id.top_fragment_container, "top_fragment");
+        navigateTo(TopFragment.newInstance(), R.id.top_fragment_container);
     }
 
     private void initPopularFragment() {
-        navigateTo(PopularFragment.newInstance(), R.id.pop_fragment_container, "pop_fragment");
+        navigateTo(PopularFragment.newInstance(), R.id.pop_fragment_container);
     }
 
     private void initUpcomingFragment() {
-        navigateTo(UpcomingFragment.newInstance(), R.id.up_fragment_container, "upcoming_fragment");
+        navigateTo(UpcomingFragment.newInstance(), R.id.up_fragment_container);
     }
 
     private void initNowPlayingFragment() {
-        navigateTo(NowPlayingFragment.newInstance(), R.id.now_fragment_container, "top_fragment");
+        navigateTo(NowPlayingFragment.newInstance(), R.id.now_fragment_container);
     }
 
     @Override
@@ -60,13 +63,15 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     }
 
 
-    public void navigateTo(Fragment fragment, int container, String fragmentTag) {
-        if (fragmentTag != null) {
+    public void navigateTo(Fragment fragment, int container) {
             FragmentTransaction transaction = getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(container, fragment, fragmentTag);
-            transaction.commit();
-        }
+                    .replace(container, fragment);
+        transaction.commit();
+    }
 
+    public void showDetails(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.main_container, fragment);
+        transaction.commit();
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.example.stan.movietime.di.AppInjector;
-import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
 
@@ -22,16 +21,23 @@ public class MoviesApp extends Application implements HasActivityInjector {
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
+//    private RefWatcher refWatcher;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
         AppInjector.init(this);
 
     }
+
+//    public static RefWatcher getRefWatcher(Context context) {
+//        MoviesApp application = (MoviesApp) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 
     @Override
     public AndroidInjector<Activity> activityInjector() {

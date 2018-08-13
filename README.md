@@ -12,13 +12,15 @@ The following diagram explains the architecture
 
 ### Prerequisites
 
-This app targets API 28
+<p align="center">
+This app targets API 28 and min SDK is API 23 (Marshmallow)
 
+![demo](/demo.gif) <br>
 ![image1](https://imgur.com/3g82VgWl.jpg)
 ![image2](https://imgur.com/Ero9dahl.jpg)
 ![image3](https://imgur.com/qbGlhRVl.jpg)
 ![image4](https://imgur.com/UriTBmRl.jpg)
-
+</p>
 
 
 ## Built With

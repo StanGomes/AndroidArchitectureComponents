@@ -9,6 +9,9 @@ The following diagram explains the architecture
 
 ![image1](https://imgur.com/q5fSEuw.jpg)
 
+<a href="https://play.google.com/store/apps/details?id=com.devhouse.stan.movietime">
+<img align="center" src = "/google-play-store-759.jpg" style="width="400 height=300">
+</a>
 
 ### Prerequisites
 
